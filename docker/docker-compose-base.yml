@@ -213,4 +213,3 @@ volumes:
 
 networks:
   ragflow:
-    driver: bridge
