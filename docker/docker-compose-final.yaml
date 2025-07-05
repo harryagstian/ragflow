@@ -14,7 +14,6 @@ services:
       cluster.routing.allocation.disk.watermark.low: 5gb
       cluster.routing.allocation.disk.watermark.high: 3gb
       cluster.routing.allocation.disk.watermark.flood_stage: 2gb
-      MYSQL_ROOT_HOST: '%'
       TZ: ${TIMEZONE}
       DOC_ENGINE: ${DOC_ENGINE}
       STACK_VERSION: ${STACK_VERSION}
@@ -88,6 +87,7 @@ services:
       EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE}
       REGISTER_ENABLED: ${REGISTER_ENABLED}
       HF_ENDPOINT: ${HF_ENDPOINT}
+      MYSQL_ROOT_HOST: '%'
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/data/application/init.sql
