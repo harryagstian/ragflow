@@ -55,7 +55,7 @@ services:
     restart: on-failure
 
   mysql:
-    image: mysql:8.0.39
+    image: mysql:8.0.42
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       TZ: ${TIMEZONE}
@@ -68,6 +68,7 @@ services:
       KIBANA_USER: ${KIBANA_USER}
       KIBANA_PASSWORD: ${KIBANA_PASSWORD}
       MEM_LIMIT: ${MEM_LIMIT}
+      MYSQL_DATABASE: rag_flow
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DBNAME: ${MYSQL_DBNAME}
@@ -88,9 +89,15 @@ services:
       REGISTER_ENABLED: ${REGISTER_ENABLED}
       HF_ENDPOINT: ${HF_ENDPOINT}
       MYSQL_ROOT_HOST: '%'
+    command:
+      --max_connections=1000
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+      --tls_version="TLSv1.2,TLSv1.3"
+      --binlog_expire_logs_seconds=604800
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/data/application/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-uroot", "-p${MYSQL_PASSWORD}"]
       start_period: 60s
