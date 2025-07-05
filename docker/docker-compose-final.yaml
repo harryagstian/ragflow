@@ -87,14 +87,6 @@ services:
       EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE}
       REGISTER_ENABLED: ${REGISTER_ENABLED}
       HF_ENDPOINT: ${HF_ENDPOINT}
-    command:
-      --max_connections=1000
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_unicode_ci
-      --default-authentication-plugin=mysql_native_password
-      --tls_version="TLSv1.2,TLSv1.3"
-      --init-file /data/application/init.sql
-      --binlog_expire_logs_seconds=604800
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/data/application/init.sql
