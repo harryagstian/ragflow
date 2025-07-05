@@ -1,10 +1,8 @@
 services:
   es01:
-    container_name: ragflow-es-01
     image: elasticsearch:${STACK_VERSION}
     volumes:
       - esdata01:/usr/share/elasticsearch/data
-    env_file: .env
     environment:
       node.name: es01
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
@@ -58,8 +56,6 @@ services:
 
   mysql:
     image: mysql:8.0.39
-    container_name: ragflow-mysql
-    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       TZ: ${TIMEZONE}
@@ -113,8 +109,6 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2025-06-13T11-33-47Z
-    env_file: .env
-    container_name: ragflow-minio
     command: server --console-address ":9001" /data
     environment:
       MINIO_ROOT_USER: ${MINIO_USER}
@@ -155,7 +149,6 @@ services:
   redis:
     # swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/valkey/valkey:8
     image: valkey/valkey:8
-    container_name: ragflow-redis
     command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 128mb --maxmemory-policy allkeys-lru
     environment:
       DOC_ENGINE: ${DOC_ENGINE}
@@ -195,7 +188,6 @@ services:
       mysql:
         condition: service_healthy
     image: ${RAGFLOW_IMAGE}
-    env_file: .env
     # Example configuration to set up an MCP server:
     # command:
     #   - --enable-mcpserver
@@ -205,7 +197,6 @@ services:
     #   - --mcp-script-path=/ragflow/mcp/server/server.py
     #   - --mcp-mode=self-host
     #   - --mcp-host-api-key=ragflow-xxxxxxx
-    container_name: ragflow-server
     volumes:
       - ./ragflow-logs:/ragflow/logs
       - ./nginx/ragflow.conf:/etc/nginx/conf.d/ragflow.conf
